@@ -21,7 +21,7 @@ public class Flee : Behaviour
                 closetestObsticle = i;
         }
 
-        return ((agent.GetPos() - m_obsticles[closetestObsticle].GetPos()).normalized * 75.0f) - agent.GetVel();
+        return ((agent.GetPos() - m_obsticles[closetestObsticle].GetPos()).normalized * 25.0f) - agent.GetVel();
     }
 
     public void SetObsticle(List<Agent> agents)

@@ -223,7 +223,8 @@ MonoBehaviour:
   m_playerSprite: {fileID: 1833451795}
   m_seekSprite: {fileID: 1141928025}
   m_obsticleSprite: {fileID: 1785181821}
-  m_enemyCount: 50
+  m_enemyCount: 150
+  m_obsticleCount: 15
 --- !u!1 &1141928024
 GameObject:
   m_ObjectHideFlags: 0

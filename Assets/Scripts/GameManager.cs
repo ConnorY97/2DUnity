@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
 	public SpriteRenderer m_seekSprite;
 	public SpriteRenderer m_obsticleSprite;
 	public int m_enemyCount = 1;
-	public static float SPEED = 100.0f;
+	public int m_obsticleCount = 1;
+	public static float SPEED = 50.0f;
 	private Agent m_player;
-	private Agent m_obsticle;
+	//private Agent m_obsticle;
 	private List<Agent> m_seekers = new List<Agent>();
+	private List<Agent> m_obsticles = new List<Agent>();
 	private Seek m_seekBehavior = new Seek();
 	private Flee m_fleeBehaviour = new Flee();
 	//private List<Seek> m_seekBehaviours = new List<Seek>();
@@ -21,27 +23,41 @@ public class GameManager : MonoBehaviour
 		// Agent init
 		m_player = new Agent("Player", m_playerSprite);
 		m_player.SetPos(new Vector2(10.0f, 10.0f));
-		m_obsticle = new Agent("Obsticle", m_obsticleSprite);
-		m_obsticle.SetPos(new Vector2(5.0f, 5.0f));
+		//m_obsticle = new Agent("Obsticle", m_obsticleSprite);
+		//m_obsticle.SetPos(new Vector2(5.0f, 5.0f));
 
 		// Set initial position of agents
 		m_player.AgentUpdate();
-		m_obsticle.AgentUpdate();
+		//m_obsticle.AgentUpdate();
 
 		// Behavior init
 		m_seekBehavior.SetTarget(m_player);
-		m_fleeBehaviour.SetObsticle(m_obsticle);
-		
-		// enemy init
-		for (int i = 0; i < m_enemyCount; i++)
+        
+        // Obsticle init
+        for (int i = 0; i < m_obsticleCount; i++)
+        {
+            var tempSprite = Instantiate(m_obsticleSprite, this.transform);
+            Agent obsticle = new Agent("Obsticle" + 1, tempSprite);
+            float xPos = Random.Range(-100.0f, 100.0f);
+            float yPos = Random.Range(-100.0f, 100.0f);
+            obsticle.SetPos(new Vector2(xPos, yPos));
+			obsticle.AgentUpdate();
+			m_obsticles.Add(obsticle);
+        }
+
+		m_fleeBehaviour.SetObsticle(m_obsticles);
+
+        // Enemy init
+        for (int i = 0; i < m_enemyCount; i++)
 		{
 			// Init and position setting
 			var tempSprite = Instantiate(m_seekSprite, this.transform);
 			Agent seeker = new Agent("Seeker" + i, tempSprite);
-			float xPos = Random.Range(0.0f, 100.0f);
-			float yPos = Random.Range(0.0f, 100.0f);
+			float xPos = Random.Range(-100.0f, 100.0f);
+			float yPos = Random.Range(-100.0f, 100.0f);
 			seeker.SetPos(new Vector2(xPos,yPos));
 			
+			// Each flee behaviour will need to hav its own obsticle I think
 			// Adding behaviours
 			seeker.AddBehaviour(m_seekBehavior);
 			seeker.AddBehaviour(m_fleeBehaviour);
