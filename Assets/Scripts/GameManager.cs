@@ -6,46 +6,59 @@ public class GameManager : MonoBehaviour
 {
 	public SpriteRenderer m_playerSprite;
 	public SpriteRenderer m_seekSprite;
+	public SpriteRenderer m_obsticleSprite;
 	public int m_enemyCount = 1;
-	private Agent m_player;// = new Agent("Player");
-	//private Agent m_seek;// = new Agent("Seek");
+	public static float SPEED = 100.0f;
+	private Agent m_player;
+	private Agent m_obsticle;
 	private List<Agent> m_seekers = new List<Agent>();
-	//private Seek m_followBehavior = new Seek();
-	private List<Seek> m_seekBehaviours = new List<Seek>();
+	private Seek m_seekBehavior = new Seek();
+	private Flee m_fleeBehaviour = new Flee();
+	//private List<Seek> m_seekBehaviours = new List<Seek>();
 
     private void Start()
     {
+		// Agent init
 		m_player = new Agent("Player", m_playerSprite);
 		m_player.SetPos(new Vector2(10.0f, 10.0f));
+		m_obsticle = new Agent("Obsticle", m_obsticleSprite);
+		m_obsticle.SetPos(new Vector2(5.0f, 5.0f));
 
+		// Set initial position of agents
+		m_player.AgentUpdate();
+		m_obsticle.AgentUpdate();
+
+		// Behavior init
+		m_seekBehavior.SetTarget(m_player);
+		m_fleeBehaviour.SetObsticle(m_obsticle);
+		
+		// enemy init
 		for (int i = 0; i < m_enemyCount; i++)
 		{
+			// Init and position setting
 			var tempSprite = Instantiate(m_seekSprite, this.transform);
 			Agent seeker = new Agent("Seeker" + i, tempSprite);
 			float xPos = Random.Range(0.0f, 100.0f);
 			float yPos = Random.Range(0.0f, 100.0f);
 			seeker.SetPos(new Vector2(xPos,yPos));
-			Seek behaviour = new Seek();
-			behaviour.SetTarget(m_player);
-			seeker.AddBehaviour(behaviour);
+			
+			// Adding behaviours
+			seeker.AddBehaviour(m_seekBehavior);
+			seeker.AddBehaviour(m_fleeBehaviour);
+
+			// Adding to list
 			m_seekers.Add(seeker);
-			m_seekBehaviours.Add(behaviour);
 		}
-		//m_seek = new Agent("Seek", m_seekSprite);
-		//m_seek.SetPos(new Vector2(50.0f, 50.0f));
-		//m_followBehavior.SetTarget(m_player);
-		//m_seek.AddBehaviour(m_followBehavior);
     }
 
     private void Update()
     {
-		m_player.AgentUpdate();
+		//m_player.AgentUpdate();
+		//m_obsticle.AgentUpdate();
 		foreach (Agent currentSeeker in m_seekers)
 		{
 			currentSeeker.AgentUpdate();
 		}
-
-		//m_seek.AgentUpdate();
     }
 }
 

@@ -51,18 +51,6 @@ public class Agent
         m_sprite.transform.position = m_pos;
     }
 
-    private void Update()
-    {
-        // Since the transform is in 3d space, update the Vector3 postion every frame. We will pretend is it 2d
-        //transform.position = new Vector3(m_pos.x, m_pos.y, transform.position.z);
-    }
-
-    private void OnDrawGizmos()
-    {
-        // Draw the current position of the agent using a cube for now
-        Gizmos.DrawCube(m_pos, new Vector3(1,1,1));
-    }
-
     // Setters
     public void SetPos(Vector2 position) { m_pos = position; }
     public void SetVel(Vector2 velocity) { m_vel = velocity; }

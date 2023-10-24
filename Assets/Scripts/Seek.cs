@@ -5,7 +5,6 @@ using UnityEngine;
 public class Seek : Behaviour
 {
     private Agent m_target;
-    public float m_speed = 100.0f;
 
 
     public override Vector2 BehaviorUpdate(Agent agent)
@@ -13,24 +12,34 @@ public class Seek : Behaviour
         // Checking if the provided agent is valid
         if (agent == null)
             return Vector2.zero;
+        //                      Dir                                 Dir                   Force
+        return ((m_target.GetPos() - agent.GetPos()).normalized * GameManager.SPEED) - agent.GetVel();
 
-        // Positions
-        Vector2 currentPos = agent.GetPos();
-        Vector2 targetPos = m_target.GetPos();
-
+        /* Explanation of this functions V 
         // Calculate the vector describing the direction to the target and normalize it
         // The direction is calulated by targets position subtracted from our own
-        Vector2 dir = (targetPos - currentPos).normalized;
+        Vector2 dir = (m_target.GetPos() - agent.GetPos()).normalized;
 
         // Multiply the direction by the speed we want the agent to move
-        dir *= m_speed;
+        dir *= GameManager.SPEED;
 
         // Subtract the agent’s current velocity from the result to get the force we need to apply
-        Vector2 force = dir - m_target.GetVel();
+        Vector2 force = dir - agent.GetVel();
 
         // return the force
         return force;
+        */
     }
 
-    public void SetTarget(Agent agent) { m_target = agent; }
+    public void SetTarget(Agent agent) 
+    {
+        if (agent != null)
+        {
+            m_target = agent;
+        }
+        else
+        {
+            Debug.Log("Failed to set target for seek bahavior, check passed object");
+        }
+    }
 }
