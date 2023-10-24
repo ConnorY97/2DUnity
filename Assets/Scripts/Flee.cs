@@ -18,10 +18,16 @@ public class Flee : Behaviour
         {
             float currentDistance = Vector2.Distance(agent.GetPos(), m_obsticles[i].GetPos());
             if (currentDistance < smallestDistance)
+            {
+                smallestDistance = currentDistance;
                 closetestObsticle = i;
+            }
         }
+        
+        Debug.Log(agent.GetName() + " is avoiding obsitcle: " + closetestObsticle);
 
-        return ((agent.GetPos() - m_obsticles[closetestObsticle].GetPos()).normalized * 25.0f) - agent.GetVel();
+        //                                Dir                                                    Half power               Force
+        return ((agent.GetPos() - m_obsticles[closetestObsticle].GetPos()).normalized * (GameManager.SPEED * 0.75f)) - agent.GetVel();
     }
 
     public void SetObsticle(List<Agent> agents)

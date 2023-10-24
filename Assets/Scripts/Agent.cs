@@ -11,7 +11,6 @@ public class Agent
     private string m_name;
     private SpriteRenderer m_sprite = new SpriteRenderer();
 
-
     public Agent(string name, SpriteRenderer renderer)
     {
         m_name = name;
@@ -45,7 +44,6 @@ public class Agent
 
         // Add Velocity multiplied by delta time to Position
         m_pos += m_vel * Time.deltaTime;
-        //Debug.Log(m_name + "'s current position is: " + m_pos);
 
         // Update the position of the sprite
         m_sprite.transform.position = m_pos;
@@ -58,4 +56,5 @@ public class Agent
     // Getters
     public Vector2 GetPos() { return m_pos; }
     public Vector2 GetVel() { return m_vel; }
+    public string GetName() { return m_name; }
 }

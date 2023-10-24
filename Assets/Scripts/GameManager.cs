@@ -14,8 +14,9 @@ public class GameManager : MonoBehaviour
 	//private Agent m_obsticle;
 	private List<Agent> m_seekers = new List<Agent>();
 	private List<Agent> m_obsticles = new List<Agent>();
-	private Seek m_seekBehavior = new Seek();
-	private Flee m_fleeBehaviour = new Flee();
+	//private Seek m_seekBehavior = new Seek();
+	//private Flee m_fleeBehavior = new Flee();
+	private Player m_playerBehavior = new Player();
 	//private List<Seek> m_seekBehaviours = new List<Seek>();
 
     private void Start()
@@ -23,15 +24,13 @@ public class GameManager : MonoBehaviour
 		// Agent init
 		m_player = new Agent("Player", m_playerSprite);
 		m_player.SetPos(new Vector2(10.0f, 10.0f));
-		//m_obsticle = new Agent("Obsticle", m_obsticleSprite);
-		//m_obsticle.SetPos(new Vector2(5.0f, 5.0f));
+		m_player.AddBehaviour(m_playerBehavior);
 
 		// Set initial position of agents
 		m_player.AgentUpdate();
-		//m_obsticle.AgentUpdate();
 
 		// Behavior init
-		m_seekBehavior.SetTarget(m_player);
+		//m_seekBehavior.SetTarget(m_player);
         
         // Obsticle init
         for (int i = 0; i < m_obsticleCount; i++)
@@ -45,7 +44,7 @@ public class GameManager : MonoBehaviour
 			m_obsticles.Add(obsticle);
         }
 
-		m_fleeBehaviour.SetObsticle(m_obsticles);
+		//m_fleeBehavior.SetObsticle(m_obsticles);
 
         // Enemy init
         for (int i = 0; i < m_enemyCount; i++)
@@ -57,10 +56,16 @@ public class GameManager : MonoBehaviour
 			float yPos = Random.Range(-100.0f, 100.0f);
 			seeker.SetPos(new Vector2(xPos,yPos));
 			
+			// Creating each behaviour new for each enemy
+			Flee flee = new Flee();
+			flee.SetObsticle(m_obsticles);
+			Seek seek = new Seek();
+			seek.SetTarget(m_player);
+
 			// Each flee behaviour will need to hav its own obsticle I think
 			// Adding behaviours
-			seeker.AddBehaviour(m_seekBehavior);
-			seeker.AddBehaviour(m_fleeBehaviour);
+			seeker.AddBehaviour(seek);
+			seeker.AddBehaviour(flee);
 
 			// Adding to list
 			m_seekers.Add(seeker);
@@ -69,8 +74,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-		//m_player.AgentUpdate();
-		//m_obsticle.AgentUpdate();
+		m_player.AgentUpdate();
+
 		foreach (Agent currentSeeker in m_seekers)
 		{
 			currentSeeker.AgentUpdate();
