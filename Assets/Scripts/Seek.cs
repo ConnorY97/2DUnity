@@ -6,6 +6,7 @@ public class Seek : Behaviour
 {
     private Agent m_target;
 
+    public Seek(float weight) : base(weight) { }
 
     public override Vector2 BehaviorUpdate(Agent agent)
     {
@@ -13,7 +14,7 @@ public class Seek : Behaviour
         if (agent == null)
             return Vector2.zero;
         //                      Dir                                 Dir                   Force
-        return ((m_target.GetPos() - agent.GetPos()).normalized * GameManager.SPEED) - agent.GetVel();
+        return ((m_target.GetPos() - agent.GetPos()).normalized * GetWeight()) - agent.GetVel();
 
         /* Explanation of this functions V 
         // Calculate the vector describing the direction to the target and normalize it

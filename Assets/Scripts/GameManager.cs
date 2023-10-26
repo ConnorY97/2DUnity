@@ -4,33 +4,35 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	[Header("Behaviour weights")]
+	public float playerWeight = 100.0f;
+	public float seekWeight = 100.0f;
+	public float separationWeight = 100.0f;
+	public float fleeWeight = 100.0f;
+
+	[Header("Entity counts")]
+	public int m_enemyCount = 1;
+	public int m_obsticleCount = 1;
+
+	[Header("Rendering")]
 	public SpriteRenderer m_playerSprite;
 	public SpriteRenderer m_seekSprite;
 	public SpriteRenderer m_obsticleSprite;
-	public int m_enemyCount = 1;
-	public int m_obsticleCount = 1;
-	public static float SPEED = 50.0f;
+
+
 	private Agent m_player;
-	//private Agent m_obsticle;
 	private List<Agent> m_seekers = new List<Agent>();
 	private List<Agent> m_obsticles = new List<Agent>();
-	//private Seek m_seekBehavior = new Seek();
-	//private Flee m_fleeBehavior = new Flee();
-	private Player m_playerBehavior = new Player();
-	//private List<Seek> m_seekBehaviours = new List<Seek>();
 
     private void Start()
     {
 		// Agent init
 		m_player = new Agent("Player", m_playerSprite);
 		m_player.SetPos(new Vector2(10.0f, 10.0f));
-		m_player.AddBehaviour(m_playerBehavior);
+		m_player.AddBehaviour(new Player(playerWeight));
 
 		// Set initial position of agents
 		m_player.AgentUpdate();
-
-		// Behavior init
-		//m_seekBehavior.SetTarget(m_player);
         
         // Obsticle init
         for (int i = 0; i < m_obsticleCount; i++)
@@ -44,8 +46,6 @@ public class GameManager : MonoBehaviour
 			m_obsticles.Add(obsticle);
         }
 
-		//m_fleeBehavior.SetObsticle(m_obsticles);
-
         // Enemy init
         for (int i = 0; i < m_enemyCount; i++)
 		{
@@ -57,9 +57,9 @@ public class GameManager : MonoBehaviour
 			seeker.SetPos(new Vector2(xPos,yPos));
 			
 			// Creating each behaviour new for each enemy
-			Flee flee = new Flee();
+			Flee flee = new Flee(fleeWeight);
 			flee.SetObsticle(m_obsticles);
-			Seek seek = new Seek();
+			Seek seek = new Seek(seekWeight);
 			seek.SetTarget(m_player);
 
 			// Each flee behaviour will need to hav its own obsticle I think
@@ -69,6 +69,14 @@ public class GameManager : MonoBehaviour
 
 			// Adding to list
 			m_seekers.Add(seeker);
+		}
+
+		// Adding the sepeparation behavior, this has to wait till all the seekers have been initialized
+		foreach (Agent seeker in m_seekers)
+		{
+			Separation separate = new Separation(separationWeight);
+			separate.SetNeighbourhood(m_seekers);
+			seeker.AddBehaviour(separate);
 		}
     }
 

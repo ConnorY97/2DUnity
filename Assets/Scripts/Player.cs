@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player : Behaviour
 {
+    public Player(float weight) : base(weight) { }
+
     public override Vector2 BehaviorUpdate(Agent agent)
     {
         if (agent == null)
@@ -32,6 +34,6 @@ public class Player : Behaviour
             agent.SetVel(Vector2.zero);
         }
 
-        return dir * GameManager.SPEED * 100;
+        return dir * GetWeight() * 100;
     }
 }

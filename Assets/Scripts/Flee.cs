@@ -6,6 +6,8 @@ public class Flee : Behaviour
 {
     private List<Agent> m_obsticles;
 
+    public Flee(float wegith) : base(wegith) { }
+
     public override Vector2 BehaviorUpdate(Agent agent)
     {
         if (agent == null)
@@ -23,11 +25,9 @@ public class Flee : Behaviour
                 closetestObsticle = i;
             }
         }
-        
-        Debug.Log(agent.GetName() + " is avoiding obsitcle: " + closetestObsticle);
 
         //                                Dir                                                    Half power               Force
-        return ((agent.GetPos() - m_obsticles[closetestObsticle].GetPos()).normalized * (GameManager.SPEED * 0.75f)) - agent.GetVel();
+        return ((agent.GetPos() - m_obsticles[closetestObsticle].GetPos()).normalized * GetWeight()) - agent.GetVel();
     }
 
     public void SetObsticle(List<Agent> agents)
