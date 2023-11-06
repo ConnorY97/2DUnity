@@ -24,7 +24,7 @@ public class Separation : Behaviour
         // Average separation force
         separationForce /= m_neighbourhood.Count;
         Vector2 force = (separationForce - agent.GetVel()) * GetWeight();
-        Debug.Log(agent.GetName() + "'s separation force is " + force);
+        //Debug.Log(agent.GetName() + "'s separation force is " + force);
         return force;
     }
 

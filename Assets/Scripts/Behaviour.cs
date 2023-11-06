@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Behaviour
@@ -14,4 +15,6 @@ public class Behaviour
     public virtual Vector2 BehaviorUpdate(Agent agent) { return Vector2.zero; }
 
     public float GetWeight() { return m_weight; }
+
+    public void UpdateWeight(float weight) { m_weight = weight; }
 }
