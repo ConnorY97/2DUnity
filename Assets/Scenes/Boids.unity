@@ -217,15 +217,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 32285620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1857a1b67b64942478a0436144b6deed, type: 3}
+  m_Script: {fileID: 11500000, guid: d76656f49598bf4468e276ef2d8cd484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWeight: 25
-  seekWeight: 100
-  separationWeight: 1
-  fleeWeight: 1
+  playerWeight: 10
+  seekWeight: 1
+  separationWeight: 0.01
+  fleeWeight: 0.01
   m_enemyCount: 50
-  m_obsticleCount: 15
+  m_obsticleCount: 50
   m_playerSprite: {fileID: 1833451795}
   m_seekSprite: {fileID: 1141928025}
   m_obsticleSprite: {fileID: 1785181821}
