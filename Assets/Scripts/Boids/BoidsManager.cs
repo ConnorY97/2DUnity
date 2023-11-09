@@ -8,7 +8,10 @@ public class BoidsManager : MonoBehaviour
     public float playerWeight = 100.0f;
     public float seekWeight = 100.0f;
     public float separationWeight = 100.0f;
+    public float neighbourhoodDistance = 10.0f;
     public float fleeWeight = 100.0f;
+    public float alignmentWeight = 1.0f;
+    public float alignmentBuffer = 0.75f;
 
     [Header("Entity counts")]
     public int m_enemyCount = 1;
@@ -19,6 +22,9 @@ public class BoidsManager : MonoBehaviour
     public SpriteRenderer m_seekSprite;
     public SpriteRenderer m_obsticleSprite;
 
+    [Header("Bounderies")]
+    public List<SpriteRenderer> m_bounds;
+
 
     private Agent m_player;
     private List<Agent> m_seekers = new List<Agent>();
@@ -27,6 +33,7 @@ public class BoidsManager : MonoBehaviour
     private Flee m_fleeBehaviour = null;
     private Seek m_seekBehaviour = null;
     private Separation m_separationBehaviour = null;
+    private Alignment m_alignmentBehaviour = null;
 
     private void Start()
     {
@@ -50,10 +57,20 @@ public class BoidsManager : MonoBehaviour
             m_obsticles.Add(obsticle);
         }
 
+        for (int i = 0; i < m_bounds.Count; i++)
+        {
+            Agent bound = new Agent("Bound " + i, m_bounds[i]);
+            float xpos = m_bounds[i].transform.position.x;
+            float yPos = m_bounds[i].transform.position.y;
+            bound.SetPos(new Vector2(xpos, yPos));
+            m_obsticles.Add(bound);
+        }
+
         // Behaviours init
         m_fleeBehaviour = new Flee(fleeWeight);
         m_seekBehaviour = new Seek(seekWeight);
-        m_separationBehaviour = new Separation(separationWeight);
+        m_separationBehaviour = new Separation(separationWeight, neighbourhoodDistance);
+        m_alignmentBehaviour = new Alignment(alignmentWeight, neighbourhoodDistance, alignmentBuffer);
 
         // Enemy init
         for (int i = 0; i < m_enemyCount; i++)
@@ -83,7 +100,9 @@ public class BoidsManager : MonoBehaviour
         foreach (Agent seeker in m_seekers)
         {
             m_separationBehaviour.SetNeighbourhood(m_seekers);
+            m_alignmentBehaviour.SetNeighbourHood(m_seekers);
             seeker.AddBehaviour(m_separationBehaviour);
+            seeker.AddBehaviour(m_alignmentBehaviour);
         }
     }
 
@@ -96,8 +115,13 @@ public class BoidsManager : MonoBehaviour
             currentSeeker.AgentUpdate();
         }
 
+        // Update values
         m_fleeBehaviour.UpdateWeight(fleeWeight);
         m_seekBehaviour.UpdateWeight(seekWeight);
         m_separationBehaviour.UpdateWeight(separationWeight);
+        m_separationBehaviour.UpdateDistance(neighbourhoodDistance);
+        m_alignmentBehaviour.UpdateWeight(alignmentWeight);
+        m_alignmentBehaviour.UpdateDistance(neighbourhoodDistance);
+        m_alignmentBehaviour.UpdateBuffer(alignmentBuffer);
     }
 }
