@@ -223,11 +223,11 @@ MonoBehaviour:
   playerWeight: 10
   seekWeight: 0
   separationWeight: 0
-  neighbourhoodDistance: 0
   fleeWeight: 0
   alignmentWeight: 0
   alignmentBuffer: 0
   cohesionWeight: 0
+  neighbourhoodDistance: 50
   m_enemyCount: 50
   m_obsticleCount: 50
   m_playerSprite: {fileID: 1833451795}
