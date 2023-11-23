@@ -221,10 +221,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerWeight: 10
-  seekWeight: 100
-  separationWeight: 25
-  neighbourhoodDistance: 10
-  fleeWeight: 10
+  seekWeight: 0
+  separationWeight: 0
+  neighbourhoodDistance: 0
+  fleeWeight: 0
+  alignmentWeight: 0
+  alignmentBuffer: 0
+  cohesionWeight: 0
   m_enemyCount: 50
   m_obsticleCount: 50
   m_playerSprite: {fileID: 1833451795}

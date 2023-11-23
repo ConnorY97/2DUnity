@@ -25,6 +25,11 @@ public class Separation : Behaviour
                 separationForce += (agent.GetPos() - neighbour.GetPos());//.normalized;
                 closeNeighbourCount++;
             }
+            else if (Vector2.Distance(agent.GetPos(), neighbour.GetPos()) == 0)
+            {
+                separationForce += new Vector2(0.5f, 0.5f);
+                closeNeighbourCount++;
+            }
         }
 
         // Need to make sure that we are not deviding by 0 if there are no close neighbours

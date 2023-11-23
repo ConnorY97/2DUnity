@@ -8,10 +8,13 @@ public class BoidsManager : MonoBehaviour
     public float playerWeight = 100.0f;
     public float seekWeight = 100.0f;
     public float separationWeight = 100.0f;
-    public float neighbourhoodDistance = 10.0f;
     public float fleeWeight = 100.0f;
     public float alignmentWeight = 1.0f;
     public float alignmentBuffer = 0.75f;
+    public float cohesionWeight = 100.0f;
+
+    [Header("Neighbourhood values")]
+    public float neighbourhoodDistance = 10.0f;
 
     [Header("Entity counts")]
     public int m_enemyCount = 1;
@@ -32,6 +35,7 @@ public class BoidsManager : MonoBehaviour
 
     private Flee m_fleeBehaviour = null;
     private Seek m_seekBehaviour = null;
+    private Cohesion m_cohesionBehaviour = null;
     private Separation m_separationBehaviour = null;
     private Alignment m_alignmentBehaviour = null;
 
@@ -71,6 +75,7 @@ public class BoidsManager : MonoBehaviour
         m_seekBehaviour = new Seek(seekWeight);
         m_separationBehaviour = new Separation(separationWeight, neighbourhoodDistance);
         m_alignmentBehaviour = new Alignment(alignmentWeight, neighbourhoodDistance, alignmentBuffer);
+        m_cohesionBehaviour = new Cohesion(cohesionWeight, neighbourhoodDistance);
 
         // Enemy init
         for (int i = 0; i < m_enemyCount; i++)
@@ -101,8 +106,10 @@ public class BoidsManager : MonoBehaviour
         {
             m_separationBehaviour.SetNeighbourhood(m_seekers);
             m_alignmentBehaviour.SetNeighbourHood(m_seekers);
+            m_cohesionBehaviour.SetNeighbourhood(m_seekers);
             seeker.AddBehaviour(m_separationBehaviour);
             seeker.AddBehaviour(m_alignmentBehaviour);
+            seeker.AddBehaviour(m_cohesionBehaviour);
         }
     }
 
@@ -123,5 +130,6 @@ public class BoidsManager : MonoBehaviour
         m_alignmentBehaviour.UpdateWeight(alignmentWeight);
         m_alignmentBehaviour.UpdateDistance(neighbourhoodDistance);
         m_alignmentBehaviour.UpdateBuffer(alignmentBuffer);
+        m_cohesionBehaviour.UpdateWeight(cohesionWeight);
     }
 }
